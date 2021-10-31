@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+    
+    <title>Go Chat</title>
+
+</head>
+<body>
+    <header>
+        <h1>Chat</h1>
+    </header>
+
+    <main>
+        <div id="welcome">
+            
+        </div>
+
+        <div id="room">
+            <h3></h3>
+            <ul></ul>
+            <form>
+                <input type="text" placeholder="message" required />
+                <button>Send</button>
+            </form>
+        </div>
+        
+        <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+        <script src="/app.js"></script>
+        
+    </main>
+</body>
+</html>
