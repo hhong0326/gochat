@@ -22,30 +22,45 @@ func main() {
 	server := gosocketio.NewServer(transport.GetDefaultWebsocketTransport())
 
 	type Message struct {
-		Text string `json:"message"`
+		ID     string `json:"id"`
+		RoomID string `json:"room_id"`
+		Text   string `json:"message"`
 	}
 
+	// make room
+	server.On("/room", func(c *gosocketio.Channel, message Message) string {
+		fmt.Println("Join: ", message.RoomID)
+		c.Join(message.RoomID)
+
+		return "room made successfully."
+	})
+
+	// leave room
+	server.On("/leave", func(c *gosocketio.Channel, message Message) string {
+		fmt.Println("Leave: ", message.RoomID)
+		c.Leave(message.RoomID)
+
+		return "leave room successfully."
+	})
+
 	// socket connection
-	server.On(gosocketio.OnConnection, func(c *gosocketio.Channel, roomID Message) {
+	server.On(gosocketio.OnConnection, func(c *gosocketio.Channel) {
 
-		fmt.Println("Connected", c.Id())
-		c.Join(roomID.Text)
-
-		// return
+		fmt.Println("Connected: ", c.Id())
 	})
 
 	// socket disconnection
 	server.On(gosocketio.OnDisconnection, func(c *gosocketio.Channel) {
-		fmt.Println("Disconnected", c.Id())
+		fmt.Println("Disconnected: ", c.Id())
 
-		// handles when someone closes the tab
 		c.Leave("Room")
 	})
 
 	// chat socket
-	server.On("/chat", func(c *gosocketio.Channel, message Message) string {
-		fmt.Println(message.Text)
-		c.BroadcastTo("Room", "/message", message.Text)
+	server.On("/chat", func(c *gosocketio.Channel, payload Message) string {
+		fmt.Println("Chat: ", payload.Text)
+
+		c.BroadcastTo(payload.RoomID, "/message", payload.Text)
 		return "message sent successfully."
 	})
 

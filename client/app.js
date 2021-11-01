@@ -1,7 +1,10 @@
 const socket = io('ws://localhost:5001', {transports: ['websocket']});
 const room = document.getElementById("room");
-const form = room.querySelector("form");
+const form = room.querySelector(".msgForm");
+const roomForm = room.querySelector(".roomForm");
+const outBtn = room.querySelector(".outBtn");
 
+var roomId = "";
 // listen for messages
 socket.on('/message', function(message) {
 
@@ -9,18 +12,32 @@ socket.on('/message', function(message) {
     addMessage(message);
 });
 
-socket.on('connect', function () {
+// socket.on('/room', function () {
 
-    console.log('socket connected');
+//     console.log('socket connected');
 
-    //send something
-    // welcome msg
-    const input = form.querySelector("input");
-    const value = input.value;
-    socket.emit('/', {name: "welcome", message: "welcome (userID)"}, function(result) {
-        console.log(result);
-    });
-});
+//     //send something
+//     // welcome msg
+//     const input = form.querySelector("input");
+//     const value = input.value;
+//     socket.emit('/room', {message: "room"}, function(result) {
+//         console.log(result);
+//     });
+// });
+
+// socket.on('connect', function () {
+
+//     console.log('socket connected');
+
+//     //send something
+//     // welcome msg
+//     // const input = roomForm.querySelector("input");
+//     // const value = input.value;
+//     // roomId = value;
+//     // socket.emit('/room', {name: "test", message: "", room_id: value}, function(result) {
+//     //     console.log(result);
+//     // });
+// });
 
 function addMessage(msg) {
     const ul = room.querySelector("ul");
@@ -29,19 +46,12 @@ function addMessage(msg) {
     ul.appendChild(li);
 }
 
-var roomId = "";
-
 function handleMsgClick(event) {
     event.preventDefault();
     const input = form.querySelector("input");
     const value = input.value;
-    if (roomId === "") {
-        roomId = "roomID";
-        // enter room
-    } else {
-        // new message
-    }
-    socket.emit('/chat', {name: "my name", message: value}, function(result) {
+    
+    socket.emit('/chat', {id: "myID", message: value, room_id: roomId}, function(result) {
 
         console.log('sended successfully');
         console.log(result);
@@ -50,8 +60,25 @@ function handleMsgClick(event) {
     input.value = "";
 }
 
-function init() {
 
+function handleRoomClick(event) {
+    event.preventDefault();
+    const input = roomForm.querySelector("input");
+    const value = input.value;
+    roomId = value;
+    socket.emit('/room', {id: "test", message: "", room_id: value}, function(result) {
+        console.log(result);
+    });
 }
 
+
+function handleOutClick(event) {
+    
+    console.log("Fdfd")
+    socket.emit('/leave', {id: "test", message: "", room_id: roomId}, function(result) {
+        console.log(result);
+    });
+}
 form.addEventListener("submit", handleMsgClick);
+roomForm.addEventListener("submit", handleRoomClick)
+outBtn.addEventListener("click", handleOutClick)

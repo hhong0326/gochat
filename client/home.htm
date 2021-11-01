@@ -21,10 +21,17 @@
         <div id="room">
             <h3></h3>
             <ul></ul>
-            <form>
+            <form class="roomForm">
+                <input type="text" placeholder="room" required />
+                <button>Set Room</button>
+            </form>
+
+            <form class="msgForm">
                 <input type="text" placeholder="message" required />
                 <button>Send</button>
             </form>
+
+            <button class="outBtn">Out</button>
         </div>
         
         <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
