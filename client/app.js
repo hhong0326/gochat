@@ -12,33 +12,6 @@ socket.on('/message', function(message) {
     addMessage(message);
 });
 
-// socket.on('/room', function () {
-
-//     console.log('socket connected');
-
-//     //send something
-//     // welcome msg
-//     const input = form.querySelector("input");
-//     const value = input.value;
-//     socket.emit('/room', {message: "room"}, function(result) {
-//         console.log(result);
-//     });
-// });
-
-// socket.on('connect', function () {
-
-//     console.log('socket connected');
-
-//     //send something
-//     // welcome msg
-//     // const input = roomForm.querySelector("input");
-//     // const value = input.value;
-//     // roomId = value;
-//     // socket.emit('/room', {name: "test", message: "", room_id: value}, function(result) {
-//     //     console.log(result);
-//     // });
-// });
-
 function addMessage(msg) {
     const ul = room.querySelector("ul");
     const li = document.createElement("li");
@@ -53,7 +26,6 @@ function handleMsgClick(event) {
     
     socket.emit('/chat', {id: "myID", message: value, room_id: roomId}, function(result) {
 
-        console.log('sended successfully');
         console.log(result);
     });
 
@@ -72,9 +44,7 @@ function handleRoomClick(event) {
 }
 
 
-function handleOutClick(event) {
-    
-    console.log("Fdfd")
+function handleOutClick() {
     socket.emit('/leave', {id: "test", message: "", room_id: roomId}, function(result) {
         console.log(result);
     });
