@@ -13,6 +13,7 @@ import (
 func main() {
 
 	fmt.Println("Chat Service")
+	fmt.Println("migration test")
 
 	gin.SetMode(gin.ReleaseMode)
 
