@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/hhong0326/gochat/handler"
 
 	gosocketio "github.com/graarh/golang-socketio"
 	"github.com/graarh/golang-socketio/transport"
@@ -66,6 +67,7 @@ func main() {
 	})
 
 	router.GET("/socket.io/", gin.WrapH(server))
+	router.GET("/chat/:room_id", handler.ConnectChatHandler())
 	router.StaticFile("/", "./client/home.htm")
 	router.StaticFile("/app.js", "./client/app.js")
 
